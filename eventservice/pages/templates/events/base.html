@@ -1,10 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
 
+<html>
+
+<head>
+    {% if event.title %}
+    <title>{{ event.title }} BestEvents</title>
+    {% else %}
+    <title>BestEvents</title>
+    {% endif %}
+
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes" name="viewport">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/af18556798.js" crossorigin="anonymous"></script>
+    <link type="text/css" href="{% static 'css/style.css' %}" rel="stylesheet" >
+     
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80313533-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    
+    gtag('config', 'UA-80313533-1');
+    </script>
+     
+</head>
+<div class="top-nav">
+    <h1><b><a href="/" style="text-decoration: none;">&nbsp;BEST EVENTS IN TOWN.&nbsp;</a></b></h1>
+</div>
+
+ <nav>
+    {% if user.is_authenticated %}
+    <div><a href="{% url 'event_new' %}" class="logout-btn"><i class="fas fa-plus-circle"></i> EVENT</a></div>
+    <div><a href="{% url 'event_list' %}" class="logout-btn"><i class="fas fa-play"></i> EVENTS</a></div>
+    <div><a href="{% url 'blog-about' %}" class="logout-btn"><i class="fas fa-info-circle"></i> ABOUT</a></div>
+    <div><a href="/logout" class="logout-btn"><i class="fas fa-door-open"></i> LOGOUT</a></div>
+    {% endif %}
+ </nav>
+
+{% if user.is_anonymous %}
+<div class="cevents">
+    <div class="greetings-banner">
+        <h2><a href="/login">LOGIN</a> / <a href="/register">CREATE</a> ACCOUNT</h2>
+        <div class="text"><p>Please login or create new account!</p>
+            <a class="github-button" href="https://github.com/Ulumanshu/training-blog" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @VAIT on GitHub"> Open on GitHub </a></div>
+        </div>
+</div>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<body>
+    {{ message }}
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="text-center">
+            <div class="new_user_banner">
+                Welcome to the event aggregation service, <i>{{ message }}!</i><br>now you can Login!
+            </div>    
+    </div>
+   
+    {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock %}
 </body>
+
 </html>
