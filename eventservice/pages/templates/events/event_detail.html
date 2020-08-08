@@ -1,0 +1,55 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+-
+<div class="cevents">
+    <div class="blockquote text-center">
+        <div class="events">
+            <div class="left-padding">
+                <div class="text-left">
+                    <div class="event_title">{{ event.title }}
+                    </div>
+                </div>
+                {% if event.author == user %}
+                <div class="delete-popup">
+                    <p><a class="btn btn-outline-danger mr-2" href="{% url 'event_delete' pk=event.pk %}">Delete Event</a>
+                        <a class="btn_btn-outline-secondary" href="{% url 'event_edit' pk=event.pk %}">Edit</a></p>
+                </div>
+                {% endif %}
+                <div class="text">
+                    <p>{{ event.text|linebreaksbr|urlize }}</p>
+                </div>
+                <div class="date">
+                    <p><b> — {{ event.author|default_if_none:"Anonymous User"}}</b>
+                        <div class="time">{{ event.published_date|date:"Y m j, H:i" }}
+                            ({{ event.published_date|timesince }} ago)</div>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="comment-header">
+            <div class="comment-box">COMMENT BOX</div>
+            <div class="comment-count">
+        <a class="btn btn-outline-primary" href="{% url 'add_comment_to_event' pk=event.pk %}">Add comment as {{request.user}}</a>
+        </div>
+        </div>
+        
+
+            {% for comment in event.comments.all %}
+
+            <div class="comment">
+                <div class="comment-display-flex">
+                    <p><b>— {{ comment.author }}</b></p>
+                    <div class="comment-time">{{ comment.created_date|date:"Y m j, H:i" }}</div>
+                </div>
+                <p>{{ comment.text|linebreaks }}</p>
+                
+            </div>
+
+            {% empty %}
+
+            <p>it's very quiet in here</p>
+
+            {% endfor %}
+
+</div>
+{% endblock %}
