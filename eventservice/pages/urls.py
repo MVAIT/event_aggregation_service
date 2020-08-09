@@ -7,8 +7,10 @@ from .views import EventListView, EventCreateView, EventDetailView, EventUpdateV
 
 
 
+
 urlpatterns = [
     path('', EventListView.as_view(), name='event_list'),
+    path('about/', views.about, name='event_about'),
     path('event/<int:pk>/', EventDetailView.as_view(), name='event_detail'),
     path('event/new/', EventCreateView.as_view(), name='event_new'),
     path('event/<int:pk>/edit/', EventUpdateView.as_view(), name='event_edit'),

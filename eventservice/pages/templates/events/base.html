@@ -35,8 +35,14 @@
     {% if user.is_authenticated %}
     <div><a href="{% url 'event_new' %}" class="logout-btn"><i class="fas fa-plus-circle"></i> EVENT</a></div>
     <div><a href="{% url 'event_list' %}" class="logout-btn"><i class="fas fa-play"></i> EVENTS</a></div>
+    <div><a href="{% url 'event_about' %}" class="logout-btn"><i class="fas fa-info-circle"></i> ABOUT</a></div>
     <div><a href="/logout" class="logout-btn"><i class="fas fa-door-open"></i> LOGOUT</a></div>
-    {% endif %}
+    {% elif user.is_anonymous %}
+    <div><a href="{% url 'event_new' %}" class="logout-btn"><i class="fas fa-plus-circle"></i> POST</a></div>
+    <div><a href="{% url 'event_list' %}" class="logout-btn"><i class="fas fa-play"></i> POSTS</a></div>
+    <div><a href="{% url 'event_about' %}" class="logout-btn"><i class="fas fa-info-circle"></i> ABOUT</a></div>
+    <div><a href="/login" class="logout-btn"><i class="fas fa-door-open"></i> LOGIN</a></div>
+     {% endif %}
  </nav>
 
 {% if user.is_anonymous %}
@@ -44,7 +50,7 @@
     <div class="greetings-banner">
         <h2><a href="/login">LOGIN</a> / <a href="/register">CREATE</a> ACCOUNT</h2>
         <div class="text"><p>Please login or create new account!</p>
-            <a class="github-button" href="https://github.com/Ulumanshu/training-blog" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @VAIT on GitHub"> Open on GitHub </a></div>
+            <a class="github-button" href="https://github.com/MVAIT/event_aggregation_service" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" aria-label="Follow @VAIT on GitHub"> Open on GitHub </a></div>
         </div>
 </div>
 {% endif %}

@@ -70,4 +70,6 @@ def add_comment_to_event(request, pk):
         form = CommentForm()
     return render(request, 'events/add_comment_to_event.html', {'form': form})
 
+def about(request):
+    return render(request, 'events/about.html', {'title': 'About'})
 # Create your views here.
