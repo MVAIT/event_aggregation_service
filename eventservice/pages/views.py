@@ -73,14 +73,15 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def add_comment_to_event(request, pk):
     event = get_object_or_404(Events, pk=pk)
-    if request.method == "EVENTS":
-        form = CommentForm(request.EVENTS)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
             comment.event = event
             comment.save()
-            return redirect('event_detail', pk=event.pk)
+            img_obj = form.instance
+            return render(request, 'events/add_comment_to_event.html', {'form': form, 'img_obj': img_obj})
     else:
         form = CommentForm()
     return render(request, 'events/add_comment_to_event.html', {'form': form})
@@ -90,40 +91,3 @@ def about(request):
 # Create your views here.
 
 
-# def post_detail(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-#     return render(request, 'blog/post_detail.html', {'post': post})
-#
-# def post_new(request):
-#     form = PostForm()
-#     return render(request, 'blog/post_edit.html', {'form': form})
-#
-# @login_required (login_url='/login')
-# def post_new(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             if request.user.is_authenticated:
-#             	post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('/', pk=post.pk)
-#     else:
-#         form = PostForm()
-#     return render(request, 'blog/post_edit.html', {'form': form})
-#
-#
-# def post_edit(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-#     if request.method == "POST":
-#         form = PostForm(request.POST, instance=post)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('post_detail', pk=post.pk)
-#     else:
-#         form = PostForm(instance=post)
-#     return render(request, 'blog/post_edit.html', {'form': form})
