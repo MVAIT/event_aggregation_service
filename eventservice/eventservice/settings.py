@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pages',
+    'users.apps.UsersConfig',
+    'pages.apps.PagesConfig',
+    'django.contrib.sites',
     'crispy_forms',
     'rest_framework',
-    'django.contrib.sites',
-    'users.apps.UsersConfig',
+
+
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventservice.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -85,9 +85,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

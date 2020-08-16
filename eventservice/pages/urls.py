@@ -1,10 +1,11 @@
 from django.urls import path, include
 from . import views
-from .views import EventListView, EventCreateView, EventDetailView, EventUpdateView, EventDeleteView
+from .views import EventListView, EventCreateView, EventDetailView, EventUpdateView, EventDeleteView, EventViewSet
+from rest_framework import routers
 
 
-
-
+router = routers.DefaultRouter()
+router.register(r'event', EventViewSet)
 
 
 
@@ -15,5 +16,5 @@ urlpatterns = [
     path('event/new/', EventCreateView.as_view(), name='event_new'),
     path('event/<int:pk>/edit/', EventUpdateView.as_view(), name='event_edit'),
     path('event/<int:pk>/delete/', EventDeleteView.as_view(), name='event_delete'),
-    path('event/<int:pk>/comment/', views.add_comment_to_event, name='add_comment_to_event'),
+    # path('event/<int:pk>/comment/', views.add_comment_to_event, name='add_comment_to_event'),
 ]

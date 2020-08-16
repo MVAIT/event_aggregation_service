@@ -38,8 +38,8 @@
     <div><a href="{% url 'event_about' %}" class="logout-btn"><i class="fas fa-info-circle"></i> ABOUT</a></div>
     <div><a href="/logout" class="logout-btn"><i class="fas fa-door-open"></i> LOGOUT</a></div>
     {% elif user.is_anonymous %}
-    <div><a href="{% url 'event_new' %}" class="logout-btn"><i class="fas fa-plus-circle"></i> POST</a></div>
-    <div><a href="{% url 'event_list' %}" class="logout-btn"><i class="fas fa-play"></i> POSTS</a></div>
+    <div><a href="{% url 'event_new' %}" class="logout-btn"><i class="fas fa-plus-circle"></i> EVENT</a></div>
+    <div><a href="{% url 'event_list' %}" class="logout-btn"><i class="fas fa-play"></i> EVENTS</a></div>
     <div><a href="{% url 'event_about' %}" class="logout-btn"><i class="fas fa-info-circle"></i> ABOUT</a></div>
     <div><a href="/login" class="logout-btn"><i class="fas fa-door-open"></i> LOGIN</a></div>
      {% endif %}
