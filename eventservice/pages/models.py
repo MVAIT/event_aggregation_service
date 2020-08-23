@@ -23,7 +23,7 @@ class Events(models.Model):
         return reverse('event_detail', kwargs ={'pk': self.pk})
 
 class Comment(models.Model):
-    event = models.ForeignKey('pages.Events', on_delete=models.CASCADE, related_name='comments')
+    event = models.ForeignKey('Events', on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)

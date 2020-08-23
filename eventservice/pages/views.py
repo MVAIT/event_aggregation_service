@@ -27,6 +27,20 @@ class EventListView(ListView):
     context_object_name = 'events'
     ordering = ['-published_date']
 
+    def get(self, request):
+        visits_count = request.session.get('visits_count', 0)
+        request.session['visits_count'] = visits_count + 1
+        # Render the HTML template passing data in the context.
+        if self.request.user.is_authenticated:
+            events = Events.objects.all().order_by('-published_date')
+        else:
+            events = Events.objects.filter(public=True).order_by('-published_date')
+        context = {
+            'visits_count': visits_count,
+            'events': events,
+        }
+        return render(request, 'events/event_list.html', context=context)
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Events
@@ -81,8 +95,10 @@ def add_comment_to_event(request, pk):
             comment.event = event
             comment.save()
             img_obj = form.instance
-            return render(request, 'events/add_comment_to_event.html', {'form': form, 'img_obj': img_obj})
+            # return render(request, 'events/add_comment_to_event.html', {'form': form, 'img_obj': img_obj})
+            return redirect('event_detail', pk=event.pk)
     else:
+
         form = CommentForm()
     return render(request, 'events/add_comment_to_event.html', {'form': form})
 
