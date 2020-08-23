@@ -1,18 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import EventForm, CommentForm
-from .models import Events
 from django.views.generic import (ListView, DetailView, DeleteView, CreateView, UpdateView)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
-from .models import Events
 from rest_framework import viewsets
-from .serializers import PostSerializer
-
+from .models import Events
+from .serializers import EventSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Events.objects.all().order_by('title')
-    serializer_class = PostSerializer
+    serializer_class = EventSerializer
 
     def get_queryset(self):
         queryset = Events.objects.all()
@@ -24,13 +21,12 @@ class EventViewSet(viewsets.ModelViewSet):
 class EventListView(ListView):
     model = Events
     template_name = 'events/base.html'
-    context_object_name = 'events'
+    context_object_name = 'Events'
     ordering = ['-published_date']
 
     def get(self, request):
         visits_count = request.session.get('visits_count', 0)
         request.session['visits_count'] = visits_count + 1
-        # Render the HTML template passing data in the context.
         if self.request.user.is_authenticated:
             events = Events.objects.all().order_by('-published_date')
         else:
@@ -41,6 +37,9 @@ class EventListView(ListView):
         }
         return render(request, 'events/event_list.html', context=context)
 
+class EventDetailView(DetailView):
+    model = Events
+    template_name = 'events/event_detail.html'
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Events
@@ -48,15 +47,29 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     template_name = 'events/event_edit.html'
     login_url = '/login'
 
+    def post(self, request):
+        if request.method == "POST":
+            visits_count = request.session.get('visits_count', 0)
+            request.session['visits_count'] = visits_count + 1
+            form = EventForm(data=request.POST)
+            if form.is_valid():
+                form.save()
+                if self.request.user.is_authenticated:
+                    posts = Events.objects.all().order_by('-published_date')
+                else:
+                    posts = Events.objects.filter(public=True).order_by('-published_date')
+                context = {
+                    'visits_count': visits_count,
+                    'posts': posts,
+                }
+                return render(request, 'events/event_list.html', context=context)
 
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class EventDetailView(DetailView):
-    model = Events
-    template_name = 'events/event_detail.html'
+
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Events
@@ -94,11 +107,8 @@ def add_comment_to_event(request, pk):
             comment.author = request.user
             comment.event = event
             comment.save()
-            img_obj = form.instance
-            # return render(request, 'events/add_comment_to_event.html', {'form': form, 'img_obj': img_obj})
             return redirect('event_detail', pk=event.pk)
     else:
-
         form = CommentForm()
     return render(request, 'events/add_comment_to_event.html', {'form': form})
 

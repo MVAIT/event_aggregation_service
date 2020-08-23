@@ -1,6 +1,18 @@
 {% extends 'events/base.html' %}
 {% block content %}
 
+<div>
+    <p>
+        You have visited this page
+        {{ visits_count }}
+        {% if visits_count <= 1 %}
+            time
+        {%else %}
+            times
+        {% endif %}
+            ..
+    </p>
+</div>
 {% if user.is_authenticated %}
 <div class="cevents">
     <div class="text-center">

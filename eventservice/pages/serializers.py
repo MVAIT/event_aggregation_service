@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Events
 
 
-class PostSerializer(serializers.ModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Events
