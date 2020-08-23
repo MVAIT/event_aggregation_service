@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
+
 # Create your models here.
 class Events(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -20,7 +21,8 @@ class Events(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event_detail', kwargs ={'pk': self.pk})
+        return reverse('event_detail', kwargs={'pk': self.pk})
+
 
 class Comment(models.Model):
     event = models.ForeignKey('Events', on_delete=models.CASCADE, related_name='comments')

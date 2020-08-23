@@ -18,28 +18,19 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(title=title)
         return queryset
 
+
 class EventListView(ListView):
     model = Events
-    template_name = 'events/base.html'
-    context_object_name = 'Events'
+    template_name = 'events/event_list.html'
+    context_object_name = 'events'
     ordering = ['-published_date']
 
-    def get(self, request):
-        visits_count = request.session.get('visits_count', 0)
-        request.session['visits_count'] = visits_count + 1
-        if self.request.user.is_authenticated:
-            events = Events.objects.all().order_by('-published_date')
-        else:
-            events = Events.objects.filter(public=True).order_by('-published_date')
-        context = {
-            'visits_count': visits_count,
-            'events': events,
-        }
-        return render(request, 'events/event_list.html', context=context)
+
 
 class EventDetailView(DetailView):
     model = Events
     template_name = 'events/event_detail.html'
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Events
@@ -55,20 +46,18 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             if form.is_valid():
                 form.save()
                 if self.request.user.is_authenticated:
-                    posts = Events.objects.all().order_by('-published_date')
+                    events = Events.objects.all().order_by('-published_date')
                 else:
-                    posts = Events.objects.filter(public=True).order_by('-published_date')
+                    events = Events.objects.filter(public=True).order_by('-published_date')
                 context = {
                     'visits_count': visits_count,
-                    'posts': posts,
+                    'events': events,
                 }
                 return render(request, 'events/event_list.html', context=context)
-
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
 
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -86,6 +75,7 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == event.author:
             return True
         return False
+
 
 class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Events
@@ -112,8 +102,7 @@ def add_comment_to_event(request, pk):
         form = CommentForm()
     return render(request, 'events/add_comment_to_event.html', {'form': form})
 
+
 def about(request):
     return render(request, 'events/about.html', {'title': 'About'})
 # Create your views here.
-
-

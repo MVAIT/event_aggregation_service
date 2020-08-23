@@ -26,15 +26,15 @@
     <div class="blockquote text-center">
         <div class="events">
             <div class="left-padding">
-            	<div class="text-left" onclick="location.href='{% url 'event_detail' pk=event.pk %}';" style="cursor: pointer;">
+            	<div class="text-left" onclick="location.href='{% url 'event_detail' event.pk %}';" style="cursor: pointer;">
                     <div class="event_title">{{ event.title|upper }}</div><div class="event_no">#{{ event.pk }}</div>
                 </div>
                 <div class="text">
                     <p>{{ event.text|truncatechars:200|linebreaksbr|urlize }}</p>
                 </div>
                 {% if event.text|length > 200 %}
-                <div class="read-more" onclick="location.href='{% url 'event_detail' pk=event.pk %}';" style="cursor: pointer;">
-                    <a href="{% url 'event_detail' pk=event.pk %}" title="Open Event"><i>Read remaining {{ event.text|wordcount }} words...</i></a>
+                <div class="read-more" onclick="location.href='{% url 'event_detail' event.pk %}';" style="cursor: pointer;">
+                    <a href="{% url 'event_detail' event.pk %}" title="Open Event"><i>Read remaining {{ event.text|wordcount }} words...</i></a>
                 </div>
                 {% endif %}
                 <div class="date">        	
@@ -44,16 +44,16 @@
 
                     {% if event.comments.count < 1 %}
                     <div class="comment-count">
-                                <a class="btn btn-outline-primary" href="{% url 'event_detail' pk=event.pk %}">Add Comment</a>
+                                <a class="btn btn-outline-primary" href="{% url 'event_detail' event.pk %}">Add Comment</a>
                     </div>
                     {% elif event.comments.count == 1 %}
                     <div class="comment-count">
-                                <a class="btn btn-outline-primary" href="{% url 'event_detail' pk=event.pk %}">{{ event.comments.count }} Comment</a>
+                                <a class="btn btn-outline-primary" href="{% url 'event_detail' event.pk %}">{{ event.comments.count }} Comment</a>
                     </div>
                     {% elif event.comments.count > 1 %}
                     
                     <div class="comment-count">
-                                <a class="btn btn-outline-primary" href="{% url 'event_detail' pk=event.pk %}">{{ event.comments.count }} Comments</a>
+                                <a class="btn btn-outline-primary" href="{% url 'event_detail' event.pk %}">{{ event.comments.count }} Comments</a>
                     </div>
                     {% endif %}
                     </div>
