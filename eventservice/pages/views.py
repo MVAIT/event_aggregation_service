@@ -23,7 +23,7 @@ class EventDetailView(DetailView):
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Events
-    fields = ['public', 'title', 'location', 'text']
+    fields = ['public', 'title','start_date', 'end_date', 'location', 'text']
     template_name = 'events/event_edit.html'
     login_url = '/login'
 
@@ -35,7 +35,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Events
-    fields = ['title', 'text', 'location']
+    fields = ['title', 'start_date', 'end_date', 'text', 'location']
     template_name = 'events/event_edit.html'
     login_url = '/login'
 
@@ -78,4 +78,6 @@ def add_comment_to_event(request, pk):
 
 def about(request):
     return render(request, 'events/about.html', {'title': 'About'})
+
+
 # Create your views here.

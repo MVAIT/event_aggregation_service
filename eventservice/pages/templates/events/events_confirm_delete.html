@@ -1,0 +1,31 @@
+{% extends 'events/base.html' %}
+{% block content %}
+
+<div class="cevents">
+    <div class="blockquote text-center">
+        <div class="events">
+            <div class="left-padding">
+                <div class="text-left">
+                    <div class="event_title">{{ events.title }}
+                    </div>
+                </div>
+                    <form method="POST">{% csrf_token %}
+                    <div class="delete-popup">
+                        <p> Are you sure?</p>
+                        <p><button class="btn btn-outline-danger mr-2" type="submit">DELETE EVENT</button>
+                        <a class="btn btn-outline-secondary" href="{% url 'events_detail' pk=events.pk %}">Cancel</a></p>
+                    </div>
+                    </form>
+                <div class="text">
+                    <p>{{ events.text|linebreaksbr|urlize }}</p>
+                </div>
+                <div class="date">          
+                    <p><b> — {{ events.author|default_if_none:"Anonymous User"}}</b><div class="time">{{ events.published_date|date:"Y m j, H:i" }}
+                    ({{ events.published_date|timesince }} ago)</div></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

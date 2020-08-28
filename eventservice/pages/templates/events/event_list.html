@@ -18,6 +18,10 @@
             	<div class="text-left" onclick="location.href='{% url 'event_detail' event.pk %}';" style="cursor: pointer;">
                     <div class="event_title">{{ event.title|upper }}</div><div class="event_no">#{{ event.pk }}</div>
                 </div>
+                <div class="date">
+                    <p>Event start date - {{event.start_date|date:"Y m j"}}</p>
+                    <p>Event end date - {{event.end_date|date:"Y m j"}}</p>
+                </div>
                 <div class="text">
                     <p>Location - {{ event.location|truncatechars:200|linebreaksbr|urlize }}</p>
                     <p>Discription - {{ event.text|truncatechars:200|linebreaksbr|urlize }}</p>

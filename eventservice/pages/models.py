@@ -4,12 +4,15 @@ from django.utils import timezone
 from django.urls import reverse
 
 
+
 # Create your models here.
 class Events(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     public = models.BooleanField(default=False, verbose_name="Should event be public?")
     title = models.CharField(max_length=35)
-    location = models.TextField(max_length=1000)
+    start_date = models.DateField(('Start'), default=timezone.now)
+    end_date = models.DateField(('End'), default=timezone.now)
+    location = models.TextField(max_length=1000, default="no location")
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(default=timezone.now)
@@ -28,8 +31,10 @@ class Events(models.Model):
 class Comment(models.Model):
     event = models.ForeignKey('Events', on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=200)
-    text = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     location = models.TextField()
+    text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)
 

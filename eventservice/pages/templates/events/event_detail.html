@@ -10,10 +10,14 @@
                 </div>
                 {% if events.author == user %}
                 <div class="delete-popup">
-                    <p><a class="btn btn-outline-danger mr-2" href="{% url 'event_delete' pk=events.pk %}">Delete Event</a>
+                    <p><a class="btn btn-outline-danger mr-2" href="{% url 'events_confirm_delete' pk=events.pk %}">Delete Event</a>
                         <a class="btn_btn-outline-secondary" href="{% url 'event_edit' pk=events.pk %}">Edit</a></p>
                 </div>
                 {% endif %}
+                <div class="date">
+                    <p>Event start date - {{event.start_date|date:"Y m j"}}</p>
+                    <p>Event end date - {{event.end_date|date:"Y m j"}}</p>
+                </div>
                 <div class="text">
                     <p>Location - {{events.location|linebreaksbr|urlize}}</p>
                     <p>Discription - {{ events.text|linebreaksbr|urlize }}</p>
