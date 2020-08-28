@@ -306,7 +306,30 @@ b {
 }
 .text {
 }
+.location {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    vertical-align: middle;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow: auto;
+    text-overflow: ellipsis;
+}
 
+.location a {
+    font-weight: normal;
+    color: ghostwhite;
+    border-bottom: 3px solid #F34444;
+    box-shadow: inset 0 -0.1rem 0 0 #F34444;
+    transition: box-shadow 0.2s;
+}
+
+.location a:hover {
+
+    box-shadow: inset 0 -2.5rem 0 0 #F34444;
+}
+.location {
+}
 .delete-popup {
     margin: 20px;
 

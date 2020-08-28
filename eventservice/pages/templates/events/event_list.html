@@ -1,18 +1,7 @@
 {% extends 'events/base.html' %}
 {% block content %}
 
-<div>
-    <p>
-        You have visited this page
-        {{ visits_count }}
-        {% if visits_count <= 1 %}
-            time
-        {%else %}
-            times
-        {% endif %}
-            ..
-    </p>
-</div>
+
 {% if user.is_authenticated %}
 <div class="cevents">
     <div class="text-center">
@@ -30,7 +19,8 @@
                     <div class="event_title">{{ event.title|upper }}</div><div class="event_no">#{{ event.pk }}</div>
                 </div>
                 <div class="text">
-                    <p>{{ event.text|truncatechars:200|linebreaksbr|urlize }}</p>
+                    <p>Location - {{ event.location|truncatechars:200|linebreaksbr|urlize }}</p>
+                    <p>Discription - {{ event.text|truncatechars:200|linebreaksbr|urlize }}</p>
                 </div>
                 {% if event.text|length > 200 %}
                 <div class="read-more" onclick="location.href='{% url 'event_detail' event.pk %}';" style="cursor: pointer;">

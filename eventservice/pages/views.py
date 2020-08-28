@@ -4,19 +4,8 @@ from django.views.generic import (ListView, DetailView, DeleteView, CreateView, 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import viewsets
 from .models import Events
-from .serializers import EventSerializer
 
 
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Events.objects.all().order_by('title')
-    serializer_class = EventSerializer
-
-    def get_queryset(self):
-        queryset = Events.objects.all()
-        title = self.request.query_params.get('title', None)
-        if title is not None:
-            queryset = queryset.filter(title=title)
-        return queryset
 
 
 class EventListView(ListView):
@@ -34,26 +23,10 @@ class EventDetailView(DetailView):
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Events
-    fields = ['public', 'title', 'text']
+    fields = ['public', 'title', 'location', 'text']
     template_name = 'events/event_edit.html'
     login_url = '/login'
 
-    def post(self, request):
-        if request.method == "POST":
-            visits_count = request.session.get('visits_count', 0)
-            request.session['visits_count'] = visits_count + 1
-            form = EventForm(data=request.POST)
-            if form.is_valid():
-                form.save()
-                if self.request.user.is_authenticated:
-                    events = Events.objects.all().order_by('-published_date')
-                else:
-                    events = Events.objects.filter(public=True).order_by('-published_date')
-                context = {
-                    'visits_count': visits_count,
-                    'events': events,
-                }
-                return render(request, 'events/event_list.html', context=context)
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -62,7 +35,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Events
-    fields = ['title', 'text']
+    fields = ['title', 'text', 'location']
     template_name = 'events/event_edit.html'
     login_url = '/login'
 
@@ -82,8 +55,8 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = '/'
 
     def test_func(self):
-        event = self.get_object()
-        if self.request.user == event.author:
+        events = self.get_object()
+        if self.request.user == events.author:
             return True
         return False
 
@@ -100,7 +73,7 @@ def add_comment_to_event(request, pk):
             return redirect('event_detail', pk=event.pk)
     else:
         form = CommentForm()
-    return render(request, 'events/add_comment_to_event.html', {'form': form})
+    return render(request, 'events/add_comment_to_event.html', {'form': form, 'event': event})
 
 
 def about(request):

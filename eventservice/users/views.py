@@ -3,8 +3,8 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 
 def register(request):
-	if request.method =='EVENTS':
-		form = UserRegisterForm(request.EVENT)
+	if request.method =='POST':
+		form = UserRegisterForm(request.POST)
 		if form.is_valid():
 			form.save(commit=True)
 			username = form.cleaned_data.get('username')

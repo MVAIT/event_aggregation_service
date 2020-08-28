@@ -1,11 +1,7 @@
 from django.urls import path, include
 from . import views
-from .views import EventListView, EventCreateView, EventDetailView, EventUpdateView, EventDeleteView, EventViewSet
-from rest_framework import routers
+from .views import EventListView, EventCreateView, EventDetailView, EventUpdateView, EventDeleteView
 
-
-router = routers.DefaultRouter()
-router.register(r'event', EventViewSet)
 
 
 
