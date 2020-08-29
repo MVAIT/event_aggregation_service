@@ -53,6 +53,7 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Events
+    template_name = 'events/events_confirm_delete.html'
     success_url = '/'
 
     def test_func(self):
