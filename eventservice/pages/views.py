@@ -18,6 +18,7 @@ class EventListView(ListView):
 
 class EventDetailView(DetailView):
     model = Events
+    context_object_name = 'events'
     template_name = 'events/event_detail.html'
 
 
